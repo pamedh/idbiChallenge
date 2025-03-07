@@ -16,8 +16,15 @@ use App\Http\Controllers\api\AuthController;
 */
 
 Route::post('login', [AuthController::class, 'login']);
-Route::post('register', [AuthController::class, 'register']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
+
+    Route::middleware('isAdmin')->group(function () {
+        Route::post('register', [AuthController::class, 'register']);
+    });
+
+    Route::middleware('isSeller')->group(function () {
+
+    });
 });
