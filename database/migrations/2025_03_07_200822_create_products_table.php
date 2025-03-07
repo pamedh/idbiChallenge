@@ -18,6 +18,7 @@ return new class extends Migration
             $table->float('price', 8, 2);
             $table->integer('stock');
             $table->timestamps();
+            $table->timestamp('deleted_at')->nullable();
         });
     }
 

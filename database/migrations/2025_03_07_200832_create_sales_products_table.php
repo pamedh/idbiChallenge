@@ -19,6 +19,7 @@ return new class extends Migration
             $table->float('total', 8, 2);
 
             $table->timestamps();
+            $table->timestamp('deleted_at')->nullable();
 
             $table->foreign('product_id')->references('id')->on('products');
             $table->foreign('sale_id')->references('id')->on('sales');

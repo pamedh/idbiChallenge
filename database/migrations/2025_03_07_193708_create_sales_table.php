@@ -20,6 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('seller_id');
             $table->float('total', 8, 2);
             $table->timestamps();
+            $table->timestamp('deleted_at')->nullable();
 
             $table->foreign('seller_id')->references('id')->on('users');
         });
