@@ -14,24 +14,6 @@ class AuthController extends Controller
         $this->authService = $authService;
     }
 
-    public function register(Request $request) {
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:6',
-            'is_admin' => 'required|boolean',
-        ]);
-
-        $user = $this->authService->register($data);;
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'User created successfully.',
-            'user' => $user
-        ], 201);
-    }
-
     public function login(Request $request) {
         $credentials = $request->validate([
             'email' => 'required|email',

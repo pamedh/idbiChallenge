@@ -4,7 +4,6 @@ namespace App\Services;
 
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use App\Repositories\UserRepository;
 
 class AuthService
@@ -13,13 +12,6 @@ class AuthService
 
     public function __construct(UserRepository $userRepository) {
         $this->userRepository = $userRepository;
-    }
-
-    public function register($data) {
-        $data['password'] = Hash::make($data['password']);
-        $user = $this->userRepository->createUser($data);
-
-        return $user;
     }
 
     public function login($credentials) {

@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\AuthController;
+use App\Http\Controllers\api\UserController;
 use App\Http\Controllers\api\ProductController;
 
 /*
@@ -27,7 +28,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('products/{id}', [ProductController::class, 'update']); 
 
     Route::middleware('isAdmin')->group(function () {
-        Route::post('register', [AuthController::class, 'register']);
+        Route::get('users', [UserController::class, 'index']);
+        Route::post('users', [UserController::class, 'store']);
+        Route::get('users/{id}', [UserController::class, 'show']); 
+        Route::put('users/{id}', [UserController::class, 'update']); 
+        Route::delete('users/{id}', [UserController::class, 'delete']);
         
         Route::delete('products/{id}', [ProductController::class, 'delete']); 
     });
