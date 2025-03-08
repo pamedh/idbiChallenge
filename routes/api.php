@@ -7,6 +7,7 @@ use App\Http\Controllers\api\UserController;
 use App\Http\Controllers\api\ProductController;
 use App\Http\Controllers\api\SaleController;
 use App\Http\Controllers\api\SaleProductController;
+use App\Http\Controllers\api\SaleReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,6 +47,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('products/{id}', [ProductController::class, 'delete']); 
 
         Route::get('sales', [SaleController::class, 'index']);
+        Route::get('sales/report', [SaleReportController::class, 'generate']);
         Route::get('sales/{id}', [SaleController::class, 'showWithProducts']);
     });
 });
