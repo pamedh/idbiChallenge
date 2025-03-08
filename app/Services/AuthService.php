@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Repositories\UserRepository;
@@ -18,35 +19,23 @@ class AuthService
         $data['password'] = Hash::make($data['password']);
         $user = $this->userRepository->createUser($data);
 
-        return response()->json([
-            'message' => 'User registered successfully',
-            'user' => $user
-        ], 201);
+        return $user;
     }
 
     public function login($credentials) {
         if (!Auth::attempt($credentials)) {
-            
-            return response()->json([
-                'error' => 'Unauthorized'
-            ], 401);
+            throw new AuthenticationException('Invalid credentials');
         }
 
         $user = Auth::user();
         $token = $user->createToken('authToken')->plainTextToken;
 
-        return response()->json([
-            'token' => $token,
-            'user' => $user
-        ], 200);
+        return $token;
     }
 
-    public function logout($request) {
-        $request->user()->tokens()->delete();
-
-        return response()->json([
-            'message' => 'Logged out'
-        ], 200);
+    public function logout() {
+        $user = Auth::user();
+        $user->tokens()->delete();
     }
 }
 

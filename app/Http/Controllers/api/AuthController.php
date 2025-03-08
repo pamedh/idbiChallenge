@@ -23,7 +23,13 @@ class AuthController extends Controller
             'is_admin' => 'required|boolean',
         ]);
 
-        return $this->authService->register($data);
+        $user = $this->authService->register($data);;
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'User created successfully.',
+            'user' => $user
+        ], 201);
     }
 
     public function login(Request $request) {
@@ -32,10 +38,21 @@ class AuthController extends Controller
             'password' => 'required'
         ]);
 
-        return $this->authService->login($credentials);
+        $token = $this->authService->login($credentials);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Login successful',
+            'token' => $token
+        ], 200);
     }
 
-    public function logout(Request $request) {
-        return $this->authService->logout($request);
+    public function logout() {
+        $this->authService->logout();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Logged out successfully',
+        ], 200);
     }
 }
