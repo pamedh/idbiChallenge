@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\AuthController;
 use App\Http\Controllers\api\UserController;
 use App\Http\Controllers\api\ProductController;
+use App\Http\Controllers\api\SaleController;
+use App\Http\Controllers\api\SaleProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,17 +29,23 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('products/{id}', [ProductController::class, 'show']); 
     Route::put('products/{id}', [ProductController::class, 'update']); 
 
+    Route::post('sales', [SaleController::class, 'store']);
+    Route::put('sales/{id}/confirm', [SaleController::class, 'confirm']);
+    Route::delete('sales/{id}/cancel', [SaleController::class, 'cancel']);
+
+    Route::post('sales/{id}/products', [SaleProductController::class, 'store']);
+    Route::delete('sales/{saleId}/products/{productId}', [SaleProductController::class, 'delete']);
+    
     Route::middleware('isAdmin')->group(function () {
         Route::get('users', [UserController::class, 'index']);
         Route::post('users', [UserController::class, 'store']);
         Route::get('users/{id}', [UserController::class, 'show']); 
         Route::put('users/{id}', [UserController::class, 'update']); 
         Route::delete('users/{id}', [UserController::class, 'delete']);
-        
+
         Route::delete('products/{id}', [ProductController::class, 'delete']); 
-    });
 
-    Route::middleware('isSeller')->group(function () {
-
+        Route::get('sales', [SaleController::class, 'index']);
+        Route::get('sales/{id}', [SaleController::class, 'showWithProducts']);
     });
 });
