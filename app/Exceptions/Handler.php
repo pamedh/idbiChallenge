@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -44,6 +45,7 @@ class Handler extends ExceptionHandler
     {
         return match (true) {
             $e instanceof AuthenticationException => Response::HTTP_UNAUTHORIZED, // 401
+            $e instanceof ModelNotFoundException => Response::HTTP_NOT_FOUND, // 404
             $e instanceof ValidationException => Response::HTTP_UNPROCESSABLE_ENTITY, // 422
             $e instanceof HttpException => $e->getStatusCode(), // personalizados
             default => Response::HTTP_INTERNAL_SERVER_ERROR, // 500
@@ -52,6 +54,10 @@ class Handler extends ExceptionHandler
 
     private function getMessage(Throwable $e)
     {
-        return $e instanceof ValidationException ? $e->errors() : $e->getMessage();
+        return match (true) {
+            $e instanceof ValidationException => $e->errors(),
+            $e instanceof ModelNotFoundException => 'Resource not found',
+            default => $e->getMessage(),
+        };
     }
 }
