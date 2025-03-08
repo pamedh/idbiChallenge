@@ -85,7 +85,7 @@ class SaleService
             }
 
             //Update sale status
-            $sale->update(['status' => 'confirmed']);
+            $sale->update(['confirmed' => 1]);
 
             DB::commit();
 
