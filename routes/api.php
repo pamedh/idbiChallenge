@@ -25,9 +25,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('products', [ProductController::class, 'store']);
     Route::get('products/{id}', [ProductController::class, 'show']); 
     Route::put('products/{id}', [ProductController::class, 'update']); 
-    
+
     Route::middleware('isAdmin')->group(function () {
         Route::post('register', [AuthController::class, 'register']);
+        
+        Route::delete('products/{id}', [ProductController::class, 'delete']); 
     });
 
     Route::middleware('isSeller')->group(function () {

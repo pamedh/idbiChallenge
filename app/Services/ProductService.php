@@ -35,4 +35,8 @@ class ProductService
 
         return $product;
     }
+
+    public function delete($id) {
+        $product = $this->productRepository->delete($id);
+    }
 }

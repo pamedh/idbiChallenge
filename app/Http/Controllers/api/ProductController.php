@@ -64,4 +64,13 @@ class ProductController extends Controller
             'product' => $product
         ], 200);
     }
+
+    public function delete($id) {
+        $this->productService->delete($id);
+        
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Product deleted successfully',
+        ], 200);
+    }
 }
