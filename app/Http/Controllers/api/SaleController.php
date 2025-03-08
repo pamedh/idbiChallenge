@@ -35,9 +35,12 @@ class SaleController extends Controller
     public function store(Request $request) {
         $data = $request->validate([
             'customer_name' => 'required|string|max:255',
-            'customer_id' => 'required|string|max:255',
+            'customer_id' => ['required', 'regex:/^\d{8}(\d{3})?$/'],
             'customer_email' => 'nullable|email',
         ]);
+
+        $documentType = strlen($data['customer_id']) === 8 ? 'DNI ' : 'RUC ';
+        $data['customer_id'] = $documentType . $data['customer_id'];
 
         $sale = $this->saleService->create($data);
 
