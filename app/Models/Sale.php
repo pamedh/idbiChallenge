@@ -21,6 +21,7 @@ class Sale extends Model
         'customer_email',
         'seller_id',
         'total',
+        'confirmed',
     ];
 
     protected $hidden = [
@@ -34,5 +35,10 @@ class Sale extends Model
 
     public function salesProducts(): HasMany {
         return $this->hasMany(SaleProduct::class, 'sale_id');
+    }
+
+    public function products() {
+        return $this->belongsToMany(Product::class, 'sales_products', 'sale_id', 'product_id')
+                    ->withPivot('total', 'quantity');
     }
 }
