@@ -37,6 +37,6 @@ class ProductService
     }
 
     public function delete($id) {
-        $product = $this->productRepository->delete($id);
+        $this->productRepository->delete($id);
     }
 }
